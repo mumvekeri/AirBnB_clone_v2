@@ -27,19 +27,14 @@ def c(text):
 
     Replaces any underscores in <text> with slashes.
     """
-    text = text.replace("_", " ")
-    return "C {}".format(text)
+    return "C {}".format(text.replace("_", " "))
 
 
-@app.route("/python", strict_slashes=False)
-@app.route("/python/<text>", strict_slashes=False)
-def python(text="is cool"):
-    """Displays 'Python' followed by the value of <text>
-
-    Replaces any underscores in <text> with slashes.
-    """
-    text = text.replace("_", " ")
-    return "Python {}".format(text)
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def pythonText(text="is cool"):
+    """display Python followed by the value of the text variable"""
+    return "Python {}".format(text.replace("_", " "))
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
@@ -48,12 +43,23 @@ def number(n):
     return "{} is a number".format(n)
 
 
-@app.route("/number_template/<int:n>", strict_slashes=False)
-def number_template(n):
-    """Displays an HTML page only if <n> is an integer."""
-    return render_template("5-number.html", n=n)
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template(n=None):
+    """display a HTML page only if n is an integer"""
+    if isinstance(n, int):
+        return render_template("5-number.html", n=n)
 
-
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
+def number_odd_or_even(n=None):
+    """display a HTML page only if n is an integer:
+    H1 tag: “Number: n is even|odd” inside the tag BODY
+    """
+    if isinstance(n, int):
+        if n % 2:
+            eo = "odd"
+        else:
+            eo = "even"
+        return render_template("6-number_odd_or_even.html", n=n, eo=eo
 
 
 if __name__ == "__main__":
